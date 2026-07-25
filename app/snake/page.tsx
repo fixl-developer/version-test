@@ -23,6 +23,7 @@ export default function SnakeGamePage() {
     direction,
     score,
     highScore,
+    topScores,
     speed,
     gameState,
     difficulty,
@@ -184,6 +185,7 @@ export default function SnakeGamePage() {
             <GameOverModal
               score={score}
               highScore={highScore}
+              topScores={topScores}
               onRestart={resetGame}
               isDarkMode={isDarkMode}
             />

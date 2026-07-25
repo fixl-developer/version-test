@@ -1,9 +1,11 @@
 import React, { memo, useState, useEffect } from "react";
 import { COUNTDOWN_DURATION } from "@/lib/constants";
+import { ScoreEntry } from "@/lib/storage";
 
 interface GameOverModalProps {
   score: number;
   highScore: number;
+  topScores: ScoreEntry[];
   onRestart: () => void;
   isDarkMode: boolean;
 }
@@ -12,7 +14,7 @@ interface GameOverModalProps {
  * Displays game over screen with score and restart option
  */
 const GameOverModal: React.FC<GameOverModalProps> = memo(
-  ({ score, highScore, onRestart, isDarkMode }) => {
+  ({ score, highScore, topScores, onRestart, isDarkMode }) => {
     const [countdown, setCountdown] = useState<number>(COUNTDOWN_DURATION);
     const [isCountingDown, setIsCountingDown] = useState<boolean>(false);
 
@@ -87,20 +89,31 @@ const GameOverModal: React.FC<GameOverModalProps> = memo(
             </div>
           </div>
 
-          <div className="mb-6">
-            <div
-              className={`text-sm ${isDarkMode ? "text-nokia-light" : "text-gray-600"}`}
-            >
-              High Score
+          {topScores.length > 0 && (
+            <div className="mb-6">
+              <div
+                className={`text-sm font-semibold uppercase tracking-wider mb-2 ${
+                  isDarkMode ? "text-nokia-light" : "text-gray-600"
+                }`}
+              >
+                Top Scores
+              </div>
+              <div className="flex flex-col gap-1">
+                {topScores.map((entry, i) => (
+                  <div
+                    key={i}
+                    className={`flex justify-between items-center px-3 py-1 rounded text-sm font-mono ${
+                      isDarkMode ? "bg-black/30 text-nokia-green" : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    <span className="w-5 text-left opacity-60">#{i + 1}</span>
+                    <span className="font-bold">{entry.score}</span>
+                    <span className="opacity-60">{entry.date}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div
-              className={`text-2xl font-bold font-mono ${
-                isDarkMode ? "text-nokia-green" : "text-gray-800"
-              }`}
-            >
-              {highScore}
-            </div>
-          </div>
+          )}
 
           {isCountingDown ? (
             <div

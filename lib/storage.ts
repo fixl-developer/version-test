@@ -62,6 +62,25 @@ export function setHighScore(score: number): void {
   setToStorage(STORAGE_KEYS.HIGH_SCORE, score);
 }
 
+export interface ScoreEntry {
+  score: number;
+  date: string;
+}
+
+export function getTopScores(): ScoreEntry[] {
+  return getFromStorage<ScoreEntry[]>(STORAGE_KEYS.TOP_SCORES) || [];
+}
+
+export function saveTopScore(score: number): ScoreEntry[] {
+  const existing = getTopScores();
+  const date = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+  const updated = [...existing, { score, date }]
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+  setToStorage(STORAGE_KEYS.TOP_SCORES, updated);
+  return updated;
+}
+
 /**
  * Gets the theme preference from localStorage
  * @returns True if dark mode, false otherwise

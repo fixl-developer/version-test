@@ -19,7 +19,7 @@ import {
   checkSelfCollision,
   checkFoodCollision,
 } from "@/lib/collision";
-import { getHighScore, setHighScore } from "@/lib/storage";
+import { getHighScore, setHighScore, getTopScores, saveTopScore, ScoreEntry } from "@/lib/storage";
 
 /**
  * Custom hook for managing snake game state
@@ -39,6 +39,7 @@ export function useSnake() {
   );
   const [score, setScore] = useState<number>(0);
   const [highScore, setHighScoreState] = useState<number>(getHighScore());
+  const [topScores, setTopScores] = useState<ScoreEntry[]>(getTopScores());
   const [speed, setSpeed] = useState<number>(
     DIFFICULTY_SETTINGS[Difficulty.MEDIUM]
   );
@@ -91,10 +92,12 @@ export function useSnake() {
   const handleGameOver = useCallback(() => {
     setGameState(GameState.GAME_OVER);
     
-    // Update high score if current score is higher
     if (score > highScore) {
       setHighScoreState(score);
       setHighScore(score);
+    }
+    if (score > 0) {
+      setTopScores(saveTopScore(score));
     }
   }, [score, highScore]);
 
@@ -179,6 +182,7 @@ export function useSnake() {
     direction,
     score,
     highScore,
+    topScores,
     speed,
     gameState,
     difficulty,

@@ -29,6 +29,7 @@ export const STORAGE_KEYS = {
   DIFFICULTY: "nokia_snake_difficulty",
   THEME: "nokia_snake_theme",
   MUTED: "nokia_snake_muted",
+  TOP_SCORES: "nokia_snake_top_scores",
 } as const;
 
 /**
