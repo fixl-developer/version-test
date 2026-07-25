@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from "./constants";
+import { Theme } from "./theme";
 
 /**
  * Gets a value from localStorage
@@ -81,20 +82,14 @@ export function saveTopScore(score: number): ScoreEntry[] {
   return updated;
 }
 
-/**
- * Gets the theme preference from localStorage
- * @returns True if dark mode, false otherwise
- */
-export function getThemePreference(): boolean {
-  return getFromStorage<boolean>(STORAGE_KEYS.THEME) ?? true;
+export function getThemePreference(): Theme {
+  const stored = getFromStorage<string>(STORAGE_KEYS.THEME);
+  if (stored === 'nokia' || stored === 'neon' || stored === 'light') return stored;
+  return 'nokia';
 }
 
-/**
- * Sets the theme preference in localStorage
- * @param isDarkMode - True for dark mode, false for light mode
- */
-export function setThemePreference(isDarkMode: boolean): void {
-  setToStorage(STORAGE_KEYS.THEME, isDarkMode);
+export function setThemePreference(theme: Theme): void {
+  setToStorage(STORAGE_KEYS.THEME, theme);
 }
 
 /**

@@ -19,7 +19,8 @@ import {
   checkSelfCollision,
   checkFoodCollision,
 } from "@/lib/collision";
-import { getHighScore, setHighScore, getTopScores, saveTopScore, ScoreEntry } from "@/lib/storage";
+import { getHighScore, setHighScore, getTopScores, saveTopScore, ScoreEntry, getThemePreference, setThemePreference } from "@/lib/storage";
+import { Theme, THEME_CYCLE } from "@/lib/theme";
 
 /**
  * Custom hook for managing snake game state
@@ -44,7 +45,7 @@ export function useSnake() {
     DIFFICULTY_SETTINGS[Difficulty.MEDIUM]
   );
   const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.MEDIUM);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+  const [theme, setTheme] = useState<Theme>(getThemePreference());
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [foodCount, setFoodCount] = useState<number>(0);
 
@@ -161,11 +162,12 @@ export function useSnake() {
     setSpeed(DIFFICULTY_SETTINGS[newDifficulty]);
   }, []);
 
-  /**
-   * Toggles dark mode
-   */
-  const toggleDarkMode = useCallback(() => {
-    setIsDarkMode((prev: boolean) => !prev);
+  const cycleTheme = useCallback(() => {
+    setTheme((prev) => {
+      const next = THEME_CYCLE[prev];
+      setThemePreference(next);
+      return next;
+    });
   }, []);
 
   /**
@@ -186,7 +188,7 @@ export function useSnake() {
     speed,
     gameState,
     difficulty,
-    isDarkMode,
+    theme,
     isMuted,
     foodCount,
     
@@ -197,7 +199,7 @@ export function useSnake() {
     resetGame,
     togglePause,
     changeDifficulty,
-    toggleDarkMode,
+    cycleTheme,
     toggleMute,
   };
 }

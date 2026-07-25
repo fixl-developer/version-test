@@ -1,30 +1,27 @@
 import React, { memo } from "react";
 import { Position } from "@/types/snake";
 import { GAME_CONFIG } from "@/lib/constants";
+import { Theme, THEMES } from "@/lib/theme";
 
 interface FoodProps {
   position: Position;
-  isDarkMode: boolean;
+  theme: Theme;
 }
 
-/**
- * Renders the food on the board with pulse animation
- */
-const Food: React.FC<FoodProps> = memo(({ position, isDarkMode }) => {
+const Food: React.FC<FoodProps> = memo(({ position, theme }) => {
   const { cellSize } = GAME_CONFIG;
-  const x = position.x * cellSize;
-  const y = position.y * cellSize;
+  const t = THEMES[theme];
 
   return (
     <div
       className="absolute animate-pulse-slow rounded-full"
       style={{
-        left: `${x + 2}px`,
-        top: `${y + 2}px`,
+        left: `${position.x * cellSize + 2}px`,
+        top: `${position.y * cellSize + 2}px`,
         width: `${cellSize - 4}px`,
         height: `${cellSize - 4}px`,
-        backgroundColor: isDarkMode ? "#FF0000" : "#CC0000",
-        boxShadow: `0 0 8px ${isDarkMode ? "#FF0000" : "#CC0000"}`,
+        backgroundColor: t.foodColor,
+        boxShadow: `0 0 8px ${t.foodGlow}`,
       }}
     />
   );

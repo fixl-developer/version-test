@@ -1,21 +1,20 @@
 import React, { memo } from "react";
 import { Position } from "@/types/snake";
 import { GAME_CONFIG } from "@/lib/constants";
+import { Theme, THEMES } from "@/lib/theme";
 import Snake from "./Snake";
 import Food from "./Food";
 
 interface SnakeBoardProps {
   snake: Position[];
   food: Position;
-  isDarkMode: boolean;
+  theme: Theme;
 }
 
-/**
- * Renders the game board with snake and food
- */
-const SnakeBoard: React.FC<SnakeBoardProps> = memo(({ snake, food, isDarkMode }) => {
+const SnakeBoard: React.FC<SnakeBoardProps> = memo(({ snake, food, theme }) => {
   const { boardSize, cellSize } = GAME_CONFIG;
   const boardSizePx = boardSize * cellSize;
+  const t = THEMES[theme];
 
   return (
     <div
@@ -23,28 +22,21 @@ const SnakeBoard: React.FC<SnakeBoardProps> = memo(({ snake, food, isDarkMode })
       style={{
         width: `${boardSizePx}px`,
         height: `${boardSizePx}px`,
-        backgroundColor: isDarkMode ? "#001100" : "#f0f0f0",
-        borderColor: isDarkMode ? "#00FF00" : "#004400",
+        backgroundColor: t.boardBg,
+        borderColor: t.boardBorder,
       }}
       role="img"
       aria-label="Snake game board"
     >
-      {/* Render grid lines for retro effect */}
       <div
         className="absolute inset-0 pointer-events-none opacity-10"
         style={{
-          backgroundImage: isDarkMode
-            ? "linear-gradient(#00FF00 1px, transparent 1px), linear-gradient(90deg, #00FF00 1px, transparent 1px)"
-            : "linear-gradient(#004400 1px, transparent 1px), linear-gradient(90deg, #004400 1px, transparent 1px)",
+          backgroundImage: `linear-gradient(${t.gridColor} 1px, transparent 1px), linear-gradient(90deg, ${t.gridColor} 1px, transparent 1px)`,
           backgroundSize: `${cellSize}px ${cellSize}px`,
         }}
       />
-
-      {/* Render food */}
-      <Food position={food} isDarkMode={isDarkMode} />
-
-      {/* Render snake */}
-      <Snake snake={snake} isDarkMode={isDarkMode} />
+      <Food position={food} theme={theme} />
+      <Snake snake={snake} theme={theme} />
     </div>
   );
 });

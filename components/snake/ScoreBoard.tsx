@@ -1,51 +1,34 @@
 import React, { memo } from "react";
+import { Theme, THEMES } from "@/lib/theme";
 
 interface ScoreBoardProps {
   score: number;
   highScore: number;
-  isDarkMode: boolean;
+  theme: Theme;
 }
 
-/**
- * Displays the current score and high score
- */
-const ScoreBoard: React.FC<ScoreBoardProps> = memo(({ score, highScore, isDarkMode }) => {
+const ScoreBoard: React.FC<ScoreBoardProps> = memo(({ score, highScore, theme }) => {
+  const t = THEMES[theme];
+
   return (
-    <div
-      className={`flex gap-8 rounded-lg p-4 transition-colors duration-300 ${
-        isDarkMode ? "bg-nokia-dark" : "bg-gray-200"
-      }`}
-    >
-      <div className="text-center">
-        <div
-          className={`text-sm font-semibold uppercase tracking-wider ${
-            isDarkMode ? "text-nokia-green" : "text-gray-600"
-          }`}
-        >
-          Score
+    <div className={`rounded-lg p-4 border-2 transition-colors duration-300 ${t.panelBg} ${t.panelBorder}`}>
+      <div className="flex gap-8 justify-center">
+        <div className="text-center">
+          <div className={`text-xs font-semibold uppercase tracking-widest mb-1 ${t.textSecondary}`}>
+            Score
+          </div>
+          <div className={`text-4xl font-bold font-mono ${t.textPrimary}`}>
+            {score}
+          </div>
         </div>
-        <div
-          className={`text-3xl font-bold font-mono ${
-            isDarkMode ? "text-nokia-green" : "text-gray-800"
-          }`}
-        >
-          {score}
-        </div>
-      </div>
-      <div className="text-center">
-        <div
-          className={`text-sm font-semibold uppercase tracking-wider ${
-            isDarkMode ? "text-nokia-green" : "text-gray-600"
-          }`}
-        >
-          Best
-        </div>
-        <div
-          className={`text-3xl font-bold font-mono ${
-            isDarkMode ? "text-nokia-green" : "text-gray-800"
-          }`}
-        >
-          {highScore}
+        <div className={`w-px ${t.panelBorder.replace('border-', 'bg-')} opacity-40`} />
+        <div className="text-center">
+          <div className={`text-xs font-semibold uppercase tracking-widest mb-1 ${t.textSecondary}`}>
+            Best
+          </div>
+          <div className={`text-4xl font-bold font-mono ${t.textPrimary}`}>
+            {highScore}
+          </div>
         </div>
       </div>
     </div>
