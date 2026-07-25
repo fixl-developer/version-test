@@ -12,6 +12,7 @@ import PauseModal from "@/components/snake/PauseModal";
 import GameOverModal from "@/components/snake/GameOverModal";
 import { getMutePreference, setMutePreference } from "@/lib/storage";
 import { THEMES } from "@/lib/theme";
+import VersionSwitcher from "@/components/snake/VersionSwitcher";
 
 export default function SnakeGamePage() {
   const {
@@ -78,7 +79,8 @@ export default function SnakeGamePage() {
         <h1 className={`text-4xl font-bold tracking-widest ${t.textPrimary}`}>
           SNAKE
         </h1>
-        <p className={`text-xs tracking-widest mt-1 ${t.textSecondary}`}>v2.0 — CLASSIC REIMAGINED</p>
+        <p className={`text-xs tracking-widest mt-1 mb-3 ${t.textSecondary}`}>CLASSIC REIMAGINED</p>
+        <VersionSwitcher />
       </header>
 
       {/* Main layout: board left, panel right on desktop */}
